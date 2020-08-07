@@ -1,9 +1,11 @@
-from string import Template
-import requests
-import re
 from json import JSONDecodeError
-from .exceptions.invalid_data import InvalidInn, InvalidAccId, InvalidInputData, InvalidOrgId
-from .exceptions.invalid_request import InvalidHeadersRequest
+from string import Template
+
+import requests
+
+from app.bussiness_components.exceptions.invalid_data import InvalidInn, InvalidAccId, InvalidInputData, InvalidOrgId
+from app.bussiness_components.exceptions.invalid_request import InvalidHeadersRequest
+from .validator_nalog_info import ValidatorNalogInfo
 
 
 class ParserNalogJson:
@@ -103,35 +105,3 @@ class ParserNalogJson:
         acc_id = str(self.parse_accounting_id(org_id))
         accounting = self.parse_accounting_json(acc_id)
         return accounting
-
-
-class ValidatorNalogInfo:
-    """
-    Объект валидатор.
-    """
-
-    @staticmethod
-    def validate_inn(data: list, expected_inn: str):
-        """
-        Проверить ИНН.
-        """
-        inn = data[0]['inn']
-        inn = re.sub(r'[^0-9]*', '', inn)
-        if len(data) != 1 or inn != expected_inn:
-            raise InvalidInn
-
-    @staticmethod
-    def validate_org_id(org_id: str):
-        """
-        Проверить внутренний номер организации.
-        """
-        if not isinstance(org_id, str) or not org_id:
-            raise InvalidOrgId
-
-    @staticmethod
-    def validate_organisation_json(json):
-        """
-        Проверить json организации на валидность.
-        """
-        if not json:
-            raise InvalidOrgId
