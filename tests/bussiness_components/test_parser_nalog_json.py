@@ -56,7 +56,7 @@ def test_parse_organisation_id(bc_parser_nalog_json, exception_invalid_inn):
 
 def test_parse_accounting_id(bc_parser_nalog_json, exception_invalid_org_id):
     """Тест метода parse_accounting_id"""
-    test_org_id = "9192266"
+    test_org_id = '9192266'
     expect_acc_id = 1714957
     parse_acc_id = bc_parser_nalog_json.parse_accounting_id(test_org_id)
     assert isinstance(parse_acc_id, int)
@@ -70,7 +70,7 @@ def test_parse_accounting_id(bc_parser_nalog_json, exception_invalid_org_id):
         status = True
     assert status
 
-    test_org_id = "123"
+    test_org_id = '123'
     status = False
     try:
         bc_parser_nalog_json.parse_accounting_id(test_org_id)
@@ -83,7 +83,7 @@ def test_parse_accounting_json(bc_parser_nalog_json, exception_invalid_acc_id):
     """
     Тест метода parse_accounting_json.
     """
-    test_acc_id = "1714957"
+    test_acc_id = '1714957'
     expected_id = 3303297
 
     parse_json = bc_parser_nalog_json.parse_accounting_json(test_acc_id)
@@ -100,7 +100,7 @@ def test_parse_accounting_json(bc_parser_nalog_json, exception_invalid_acc_id):
         status = True
     assert status
 
-    test_acc_id = ""
+    test_acc_id = ''
     status = False
     try:
         bc_parser_nalog_json.parse_accounting_json(test_acc_id)
@@ -115,3 +115,16 @@ def test_parse_accounting_json(bc_parser_nalog_json, exception_invalid_acc_id):
     except exception_invalid_acc_id:
         status = True
     assert status
+
+
+def test_parse_accounting(bc_parser_nalog_json):
+    """
+    Тест метода parse_accounting
+    """
+    test_inn = '5405956474'
+    expected_id = 3303297
+    parse_json = bc_parser_nalog_json.parse_accounting(test_inn)
+
+    assert isinstance(parse_json, list)
+    assert parse_json[0].get('id')
+    assert parse_json[0]['id'] == expected_id

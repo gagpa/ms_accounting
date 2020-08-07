@@ -92,6 +92,15 @@ class ParserNalogJson:
         accounting = response_data
         return accounting
 
+    def parse_accounting(self, inn: str) -> dict:
+        """
+        Запарсить БО по ИНН организации
+        """
+        org_id = str(self.parse_organisation_id(inn))
+        acc_id = str(self.parse_accounting_id(org_id))
+        accounting = self.parse_accounting_json(acc_id)
+        return accounting
+
 
 class ValidatorNalogInfo:
     """
