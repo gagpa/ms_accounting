@@ -2,6 +2,8 @@ from string import Template
 import requests
 import re
 from json import JSONDecodeError
+from .exceptions.invalid_data import InvalidInn, InvalidAccId, InvalidInputData, InvalidOrgId
+from .exceptions.invalid_request import InvalidHeadersRequest
 
 
 class ParserNalogJson:
@@ -133,38 +135,3 @@ class ValidatorNalogInfo:
         """
         if not json:
             raise InvalidOrgId
-
-
-class InvalidHeadersRequest(ConnectionError):
-    """
-    Заданы неправильные зоголовки у запроса.
-    """
-    pass
-
-
-class InvalidInputData(ValueError):
-    """
-    Переданы не корректные вводные данные.
-    """
-    pass
-
-
-class InvalidOrgId(InvalidInputData):
-    """
-    Передан не корректный внутренний номер организации.
-    """
-    pass
-
-
-class InvalidAccId(InvalidInputData):
-    """
-    Передан не корректный внутренний номер БО.
-    """
-    pass
-
-
-class InvalidInn(InvalidInputData):
-    """
-    Передан не корректный ИНН.
-    """
-    pass
