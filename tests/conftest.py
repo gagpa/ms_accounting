@@ -21,3 +21,15 @@ def exception_invalid_org_id():
 @pytest.fixture()
 def exception_invalid_acc_id():
     return InvalidAccId
+
+
+@pytest.fixture()
+def catch_exception():
+    def catch_exception(arg, bc_method, exception):
+        status = False
+        try:
+            bc_method(arg)
+        except exception:
+            status = True
+        return status
+    return catch_exception

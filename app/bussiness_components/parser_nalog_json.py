@@ -1,6 +1,7 @@
 from string import Template
 import requests
 import re
+from json import JSONDecodeError
 
 
 class ParserNalogJson:
@@ -50,7 +51,7 @@ class ParserNalogJson:
             raise InvalidInn
         try:
             response_data = self.get_json('search_org', inn=inn)
-        except InvalidInputData:
+        except (InvalidInputData, JSONDecodeError):
             raise InvalidOrgId
         content = response_data['content']
         ValidatorNalogInfo.validate_inn(content, inn)
@@ -75,7 +76,7 @@ class ParserNalogJson:
         """
         try:
             response_data = self.get_json('organisation', org_id=organisation_id)
-        except InvalidInputData:
+        except (InvalidInputData, JSONDecodeError):
             raise InvalidOrgId
         ValidatorNalogInfo.validate_organisation_json(response_data)
         acc_id = response_data[0]['id']
@@ -87,7 +88,7 @@ class ParserNalogJson:
         """
         try:
             response_data = self.get_json('accounting', acc_id=accounting_id)
-        except InvalidInputData:
+        except (InvalidInputData, JSONDecodeError):
             raise InvalidAccId
         accounting = response_data
         return accounting
