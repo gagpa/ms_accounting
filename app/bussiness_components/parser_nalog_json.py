@@ -14,7 +14,8 @@ class ParserNalogJson:
     """
 
     __templates_url = {'search_org': Template('https://bo.nalog.ru/nbo/organizations/search?query=$inn'),
-                       'organisation': Template('https://bo.nalog.ru/nbo/organizations/$org_id/bfo/')}
+                       'organisation': Template('https://bo.nalog.ru/nbo/organizations/$org_id/bfo/'),
+                       'accounting': Template('https://bo.nalog.ru/nbo/bfo/$acc_id/details')}
     __headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)'
                                ' AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
@@ -34,6 +35,8 @@ class ParserNalogJson:
             raise InvalidInputData
         elif response.status_code == 403:
             raise InvalidHeadersRequest
+        elif response.status_code == 500:
+            raise InvalidInputData
         elif response.status_code != 200:
             raise ConnectionError
         else:
@@ -70,7 +73,6 @@ class ParserNalogJson:
         """
         Запарсить внутренний номер БО по врнутреннему номеру организации
         """
-        # ValidatorNalogInfo.validate_org_id(organisation_id)
         try:
             response_data = self.get_json('organisation', org_id=organisation_id)
         except InvalidInputData:
@@ -78,6 +80,17 @@ class ParserNalogJson:
         ValidatorNalogInfo.validate_organisation_json(response_data)
         acc_id = response_data[0]['id']
         return acc_id
+
+    def parse_accounting_json(self, accounting_id: str) -> dict:
+        """
+        Запарсить БО по внутреннему номеру БО.
+        """
+        try:
+            response_data = self.get_json('accounting', acc_id=accounting_id)
+        except InvalidInputData:
+            raise InvalidAccId
+        accounting = response_data
+        return accounting
 
 
 class ValidatorNalogInfo:
