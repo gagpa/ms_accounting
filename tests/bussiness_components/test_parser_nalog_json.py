@@ -51,3 +51,28 @@ def test_parse_organisation_id(bc_parser_nalog_json, exception_invalid_inn):
     except exception_invalid_inn:
         status = True
     assert status
+
+
+def test_parse_accounting_id(bc_parser_nalog_json, exception_invalid_org_id):
+    """Тест метода parse_accounting_id"""
+    test_org_id = "9192266"
+    expect_acc_id = 1714957
+    parse_acc_id = bc_parser_nalog_json.parse_accounting_id(test_org_id)
+    assert parse_acc_id == expect_acc_id
+
+
+    test_org_id = (1, 2, 3)
+    status = False
+    try:
+        bc_parser_nalog_json.parse_accounting_id(test_org_id)
+    except exception_invalid_org_id:
+        status = True
+    assert status
+
+    test_org_id = "123"
+    status = False
+    try:
+        bc_parser_nalog_json.parse_accounting_id(test_org_id)
+    except exception_invalid_org_id:
+        status = True
+    assert status
