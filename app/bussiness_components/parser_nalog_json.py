@@ -30,6 +30,18 @@ class ParserNalogJson:
         """
         return requests.get(link, headers=self.__headers)
 
+    def get_json(self, template_name: str, **kwargs) -> dict:
+        """
+        Получить json по запросу.
+        template_name - ключ из словаря __template_urls
+        **kwargs - аргументы, которые нужно подставить в шаблон URL.
+        """
+        link = self.__templates_url[template_name].substitute(**kwargs)
+        response = self.get_request(link)
+        self.check_status_code(response)
+        response_data = response.json()
+        return response_data
+
     @staticmethod
     def check_status_code(response):
         """
@@ -47,7 +59,7 @@ class ParserNalogJson:
         else:
             return True
 
-    def parse_organisation_id(self, inn: str) -> int:
+    def parse_organisation_id(self, inn: str) -> str:
         """
         Запарсить внутренний номер организации по ИНН
         """
@@ -59,22 +71,10 @@ class ParserNalogJson:
             raise InvalidOrgId
         content = response_data['content']
         ValidatorNalogInfo.validate_inn(content, inn)
-        org_id = content[0]['id']
+        org_id = str(content[0]['id'])
         return org_id
 
-    def get_json(self, template_name: str, **kwargs) -> dict:
-        """
-        Получить json по запросу.
-        template_name - ключ из словаря __template_urls
-        **kwargs - аргументы, которые нужно подставить в шаблон URL.
-        """
-        link = self.__templates_url[template_name].substitute(**kwargs)
-        response = self.get_request(link)
-        self.check_status_code(response)
-        response_data = response.json()
-        return response_data
-
-    def parse_accounting_id(self, organisation_id: str) -> int:
+    def parse_accounting_id(self, organisation_id: str) -> str:
         """
         Запарсить внутренний номер БО по врнутреннему номеру организации
         """
@@ -83,7 +83,7 @@ class ParserNalogJson:
         except (InvalidInputData, JSONDecodeError):
             raise InvalidOrgId
         ValidatorNalogInfo.validate_organisation_json(response_data)
-        acc_id = response_data[0]['id']
+        acc_id = str(response_data[0]['id'])
         return acc_id
 
     def parse_accounting_json(self, accounting_id: str) -> dict:
@@ -101,7 +101,7 @@ class ParserNalogJson:
         """
         Запарсить БО по ИНН организации
         """
-        org_id = str(self.parse_organisation_id(inn))
-        acc_id = str(self.parse_accounting_id(org_id))
+        org_id = self.parse_organisation_id(inn)
+        acc_id = self.parse_accounting_id(org_id)
         accounting = self.parse_accounting_json(acc_id)
         return accounting

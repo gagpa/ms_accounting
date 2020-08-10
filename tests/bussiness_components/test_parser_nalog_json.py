@@ -23,10 +23,10 @@ def test_parse_organisation_id(bc_parser_nalog_json, exception_invalid_inn, catc
     """
     test_inn = '5405956474'
 
-    expected_org_id = 9192266
+    expected_org_id = '9192266'
 
     parse_org_id = bc_parser_nalog_json.parse_organisation_id(test_inn)
-    assert isinstance(parse_org_id, int)
+    assert isinstance(parse_org_id, str)
     assert parse_org_id == expected_org_id
 
     test_args = ['123', (1, 2, 3), None, '']
@@ -38,9 +38,9 @@ def test_parse_organisation_id(bc_parser_nalog_json, exception_invalid_inn, catc
 def test_parse_accounting_id(bc_parser_nalog_json, exception_invalid_org_id, catch_exception):
     """Тест метода parse_accounting_id"""
     test_org_id = '9192266'
-    expect_acc_id = 1714957
+    expect_acc_id = '1714957'
     parse_acc_id = bc_parser_nalog_json.parse_accounting_id(test_org_id)
-    assert isinstance(parse_acc_id, int)
+    assert isinstance(parse_acc_id, str)
     assert parse_acc_id == expect_acc_id
 
     test_args = ['123', (1, 2, 3), None, '']
