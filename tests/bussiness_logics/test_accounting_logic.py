@@ -5,7 +5,9 @@
 
 def test_get_accounting(correct_accounting_data,
                         incorrect_args,
-                        accounting_logic):
+                        accounting_logic,
+                        catch_exception,
+                        exception_invalid_inn):
     """
     Тест метода get_accounting
     """
@@ -15,3 +17,9 @@ def test_get_accounting(correct_accounting_data,
     assert isinstance(parse_json, list)
     parse_id = str(parse_json[0]['id'])
     assert expect_id == parse_id
+
+    for inn in incorrect_args:
+        status = catch_exception(accounting_logic.get_accounting, exception_invalid_inn, inn)
+        assert status
+
+

@@ -1,4 +1,6 @@
 from ..bussiness_components import NalogParserJson
+from ..exceptions.invalid_data import InvalidInn, InvalidOrgId, InvalidAccId
+from ..exceptions.invalid_app import InternalError
 
 
 class AccountLogic:
@@ -10,6 +12,11 @@ class AccountLogic:
         """
         Логика метода GET /accounting
         """
-        parser = NalogParserJson()
-        accounting = parser.parse_accounting(inn)
-        return accounting
+        try:
+            parser = NalogParserJson()
+            accounting = parser.parse_accounting(inn)
+            return accounting
+        except InvalidInn:
+            raise InvalidInn
+        except (InvalidOrgId, InvalidAccId):
+            raise InternalError
