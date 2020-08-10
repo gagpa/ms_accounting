@@ -4,10 +4,8 @@
 import pytest
 
 from app.bussiness_components.exceptions.invalid_data import InvalidInn, InvalidOrgId, InvalidAccId
-from app.bussiness_components.nalog_parser_json import NalogParserJson
-from app.bussiness_components.nalog_scalper import NalogScalper
-from app.bussiness_logics.account_logic import AccountLogic
-from app.bussiness_components.nalog_validator_info import NalogValidatorInfo
+from app.bussiness_components import NalogParserJson, NalogScalper, NalogValidatorInfo
+from app.bussiness_logics import AccountLogic
 
 
 @pytest.fixture()

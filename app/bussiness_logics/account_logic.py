@@ -1,4 +1,4 @@
-from ..bussiness_components.nalog_parser_json import NalogParserJson
+from ..bussiness_components import NalogParserJson
 
 
 class AccountLogic:
