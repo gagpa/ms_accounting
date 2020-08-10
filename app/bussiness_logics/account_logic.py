@@ -1,4 +1,4 @@
-from ..bussiness_components.parser_nalog_json import ParserNalogJson
+from ..bussiness_components.nalog_parser_json import NalogParserJson
 
 
 class AccountLogic:
@@ -10,6 +10,6 @@ class AccountLogic:
         """
         Логика метода GET /accounting
         """
-        parser = ParserNalogJson()
+        parser = NalogParserJson()
         accounting = parser.parse_accounting(inn)
         return accounting

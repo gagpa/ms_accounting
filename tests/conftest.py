@@ -1,14 +1,14 @@
 import pytest
 
 from app.bussiness_components.exceptions.invalid_data import InvalidInn, InvalidOrgId, InvalidAccId
-from app.bussiness_components.parser_nalog_json import ParserNalogJson
-from app.bussiness_components.scalper_nalog import ScalperNalog
+from app.bussiness_components.nalog_parser_json import NalogParserJson
+from app.bussiness_components.nalog_scalper import NalogScalper
 from app.bussiness_logics.account_logic import AccountLogic
 
 
 @pytest.fixture()
-def bc_parser_nalog_json():
-    return ParserNalogJson()
+def bc_nalog_parser_json():
+    return NalogParserJson()
 
 
 @pytest.fixture()
@@ -62,5 +62,5 @@ def accounting_logic():
 
 
 @pytest.fixture()
-def bc_scalper_nalog():
-    return ScalperNalog()
+def bc_nalog_scalper():
+    return NalogScalper()

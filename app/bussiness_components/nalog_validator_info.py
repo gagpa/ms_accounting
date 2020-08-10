@@ -3,7 +3,7 @@ import re
 from .exceptions.invalid_data import InvalidInn, InvalidOrgId
 
 
-class ValidatorNalogInfo:
+class NalogValidatorInfo:
     """
     Объект валидатор данных, которые используются или парсятся с сайта bo.nalog.ru.
     """

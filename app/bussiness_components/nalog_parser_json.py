@@ -1,11 +1,11 @@
 from json import JSONDecodeError
 
 from app.bussiness_components.exceptions.invalid_data import InvalidInn, InvalidAccId, InvalidInputData, InvalidOrgId
-from .scalper_nalog import ScalperNalog
-from .validator_nalog_info import ValidatorNalogInfo
+from .nalog_scalper import NalogScalper
+from .nalog_validator_info import NalogValidatorInfo
 
 
-class ParserNalogJson:
+class NalogParserJson:
     """
     Парсер.
     Занимается парсингом json объектов сайта https://bo.nalog.ru
@@ -16,20 +16,21 @@ class ParserNalogJson:
     """
 
     def __init__(self):
-        self.scalp = ScalperNalog()
+        self.scalp = NalogScalper()
+        self.validator = NalogValidatorInfo()
 
     def parse_organisation_id(self, inn: str) -> str:
         """
         Запарсить внутренний номер организации по ИНН
         """
-        ValidatorNalogInfo.validate_inn(inn)
+        self.validator.validate_inn(inn)
         try:
             response_data = self.scalp.get_json('search_org', inn=inn)
         except (InvalidInputData, JSONDecodeError):
             raise InvalidInn
         content = response_data['content']
         parse_inn = content[0]['inn']
-        ValidatorNalogInfo.validate_parse_inn(parse_inn, inn)
+        self.validator.validate_parse_inn(parse_inn, inn)
         org_id = str(content[0]['id'])
         return org_id
 
@@ -41,7 +42,7 @@ class ParserNalogJson:
             response_data = self.scalp.get_json('organisation', org_id=organisation_id)
         except (InvalidInputData, JSONDecodeError):
             raise InvalidOrgId
-        ValidatorNalogInfo.validate_organisation_json(response_data)
+        self.validator.validate_organisation_json(response_data)
         acc_id = str(response_data[0]['id'])
         return acc_id
 
