@@ -3,7 +3,9 @@
 """
 
 
-def test_get_accounting(correct_accounting_data, incorrect_args, accounting_logic):
+def test_get_accounting(correct_accounting_data,
+                        incorrect_args,
+                        accounting_logic):
     """
     Тест метода get_accounting
     """

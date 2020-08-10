@@ -22,7 +22,7 @@ def test_parse_organisation_id(correct_accounting_data,
 
     test_args = incorrect_args
     for inn in test_args:
-        status = catch_exception(inn, bc_nalog_parser_json.parse_organisation_id, exception_invalid_inn)
+        status = catch_exception(bc_nalog_parser_json.parse_organisation_id, exception_invalid_inn, inn)
         assert status
 
 
@@ -40,7 +40,7 @@ def test_parse_accounting_id(correct_accounting_data,
 
     test_args = incorrect_args
     for org_id in test_args:
-        status = catch_exception(org_id, bc_nalog_parser_json.parse_accounting_id, exception_invalid_org_id)
+        status = catch_exception(bc_nalog_parser_json.parse_accounting_id, exception_invalid_org_id, org_id)
         assert status
 
 
@@ -59,11 +59,11 @@ def test_parse_accounting_json(correct_accounting_data,
 
     assert isinstance(parse_json, list)
     assert parse_json[0].get('id')
-    assert parse_json[0]['id'] == expected_id
+    assert str(parse_json[0]['id']) == expected_id
 
     test_args = incorrect_args
     for acc_id in test_args:
-        status = catch_exception(acc_id, bc_nalog_parser_json.parse_accounting_json, exception_invalid_acc_id)
+        status = catch_exception(bc_nalog_parser_json.parse_accounting_json, exception_invalid_acc_id, acc_id)
         assert status
 
 
@@ -79,4 +79,4 @@ def test_parse_accounting(correct_accounting_data,
 
     assert isinstance(parse_json, list)
     assert parse_json[0].get('id')
-    assert parse_json[0]['id'] == expected_id
+    assert str(parse_json[0]['id']) == expected_id

@@ -13,7 +13,10 @@ class NalogValidatorInfo:
         """
         Проверить ИНН.
         """
-        inn = re.sub(r'[^0-9]*', '', parse_inn)
+        if not isinstance(parse_inn, str):
+            raise InvalidInn
+        inn = re.sub(r'[^\-0-9]*', '', parse_inn)
+        NalogValidatorInfo.validate_inn(inn)
         if inn != expected_inn:
             raise InvalidInn
 
@@ -26,9 +29,9 @@ class NalogValidatorInfo:
             raise InvalidInn
 
     @staticmethod
-    def validate_organisation_json(json: list or dict):
+    def validate_organisation_json(json: list):
         """
         Проверить json организации на валидность.
         """
-        if not json:
+        if not json and isinstance(json, list):
             raise InvalidOrgId

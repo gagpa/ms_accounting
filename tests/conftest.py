@@ -7,6 +7,7 @@ from app.bussiness_components.exceptions.invalid_data import InvalidInn, Invalid
 from app.bussiness_components.nalog_parser_json import NalogParserJson
 from app.bussiness_components.nalog_scalper import NalogScalper
 from app.bussiness_logics.account_logic import AccountLogic
+from app.bussiness_components.nalog_validator_info import NalogValidatorInfo
 
 
 @pytest.fixture()
@@ -31,10 +32,10 @@ def exception_invalid_acc_id():
 
 @pytest.fixture()
 def catch_exception():
-    def catch_exception(arg, bc_method, exception):
+    def catch_exception(bc_method, exception, *args):
         status = False
         try:
-            bc_method(arg)
+            bc_method(*args)
         except exception:
             status = True
         return status
@@ -72,3 +73,8 @@ def accounting_logic():
 @pytest.fixture()
 def bc_nalog_scalper():
     return NalogScalper()
+
+
+@pytest.fixture()
+def bc_nalog_validator_info():
+    return NalogValidatorInfo()
