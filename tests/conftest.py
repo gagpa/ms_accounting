@@ -3,7 +3,7 @@
 """
 import pytest
 
-from app.bussiness_components.exceptions.invalid_data import InvalidInn, InvalidOrgId, InvalidAccId
+from app.exceptions.invalid_data import InvalidInn, InvalidOrgId, InvalidAccId
 from app.bussiness_components import NalogParserJson, NalogScalper, NalogValidatorInfo
 from app.bussiness_logics import AccountLogic
 

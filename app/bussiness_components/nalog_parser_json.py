@@ -1,6 +1,6 @@
 from json import JSONDecodeError
 
-from app.bussiness_components.exceptions.invalid_data import InvalidInn, InvalidAccId, InvalidInputData, InvalidOrgId
+from app.exceptions.invalid_data import InvalidInn, InvalidAccId, InvalidInputData, InvalidOrgId
 from .nalog_scalper import NalogScalper
 from .nalog_validator_info import NalogValidatorInfo
 

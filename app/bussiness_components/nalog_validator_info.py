@@ -1,6 +1,6 @@
 import re
 
-from .exceptions.invalid_data import InvalidInn, InvalidOrgId
+from app.exceptions.invalid_data import InvalidInn, InvalidOrgId
 
 
 class NalogValidatorInfo:

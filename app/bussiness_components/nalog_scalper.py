@@ -2,8 +2,8 @@ from string import Template
 
 import requests
 
-from app.bussiness_components.exceptions.invalid_data import InvalidInputData
-from app.bussiness_components.exceptions.invalid_request import InvalidHeadersRequest
+from app.exceptions.invalid_data import InvalidInputData
+from app.exceptions.invalid_request import InvalidHeadersRequest
 
 
 class NalogScalper:
