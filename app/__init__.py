@@ -1,6 +1,6 @@
-from flask import Flask
 import os
 
+from flask import Flask
 
 from configs.main_config import main_config
 
