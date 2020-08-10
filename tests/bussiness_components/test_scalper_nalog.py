@@ -1,3 +1,8 @@
+"""
+Файл с тестами для класса NalogScalper
+"""
+
+
 def test_get_request(bc_nalog_scalper):
     """
     Тест метода get_request.

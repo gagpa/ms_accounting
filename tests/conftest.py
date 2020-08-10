@@ -1,3 +1,6 @@
+"""
+Файл с фиктурами для тестов.
+"""
 import pytest
 
 from app.bussiness_components.exceptions.invalid_data import InvalidInn, InvalidOrgId, InvalidAccId
@@ -54,6 +57,11 @@ def correct_accounting_data():
 def incorrect_args():
     args = ('', None, False, {}, [], (), '-5405956474', '123', 123)
     return args
+
+
+@pytest.fixture()
+def search_link():
+    return 'https://bo.nalog.ru/nbo/organizations/search?query=5405956474'
 
 
 @pytest.fixture()
