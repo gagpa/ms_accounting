@@ -63,14 +63,14 @@ class ParserNalogJson:
         """
         Запарсить внутренний номер организации по ИНН
         """
-        if not inn:
-            raise InvalidInn
+        ValidatorNalogInfo.validate_inn(inn)
         try:
             response_data = self.get_json('search_org', inn=inn)
         except (InvalidInputData, JSONDecodeError):
-            raise InvalidOrgId
+            raise InvalidInn
         content = response_data['content']
-        ValidatorNalogInfo.validate_inn(content, inn)
+        parse_inn = content[0]['inn']
+        ValidatorNalogInfo.validate_parse_inn(parse_inn, inn)
         org_id = str(content[0]['id'])
         return org_id
 

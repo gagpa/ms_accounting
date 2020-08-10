@@ -22,7 +22,6 @@ def test_parse_organisation_id(bc_parser_nalog_json, exception_invalid_inn, catc
     Ожидается: номер организации int.
     """
     test_inn = '5405956474'
-
     expected_org_id = '9192266'
 
     parse_org_id = bc_parser_nalog_json.parse_organisation_id(test_inn)
