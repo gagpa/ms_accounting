@@ -26,14 +26,6 @@ class ValidatorNalogInfo:
             raise InvalidInn
 
     @staticmethod
-    def validate_org_id(org_id: str):
-        """
-        Проверить внутренний номер организации.
-        """
-        if not isinstance(org_id, str) or not org_id:
-            raise InvalidOrgId
-
-    @staticmethod
     def validate_organisation_json(json: list or dict):
         """
         Проверить json организации на валидность.
