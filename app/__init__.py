@@ -3,6 +3,7 @@ import os
 from flask import Flask
 
 from configs.main_config import main_config
+from app.db import db
 
 
 def create_app(config_name):
@@ -12,6 +13,8 @@ def create_app(config_name):
     app = Flask(__name__)
     config = main_config[config_name]
     app.config.from_object(config)
+
+    db.init_app(app)
 
     from .api import api
     app.register_blueprint(blueprint=api, url_prefix='/api/v1')
