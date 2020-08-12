@@ -26,3 +26,11 @@ class Accounting:
         Удалить данные БО в БД.
         """
         AccountingModel.objects(inn=self.inn).delete()
+
+    def exist(self):
+        """
+        Проверить есть ли такое БО в БД
+        """
+        if AccountingModel.objects(inn=self.inn, data=self.data):
+            return True
+        return False
