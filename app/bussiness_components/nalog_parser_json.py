@@ -63,5 +63,5 @@ class NalogParserJson:
         """
         org_id = self.parse_organisation_id(inn)
         acc_id = self.parse_accounting_id(org_id)
-        accounting = self.parse_accounting_json(acc_id)
+        accounting = self.parse_accounting_json(acc_id)[0]
         return accounting
