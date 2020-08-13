@@ -16,7 +16,7 @@ class AccountLogic:
             NalogValidatorInfo.validate_inn(inn)
             if Accounting.exist(inn):
                 collection = Accounting.get_object(inn)
-                accounting = collection
+                accounting = collection['data']
             else:
                 parser = NalogParserJson()
                 accounting = parser.parse_accounting(inn)
