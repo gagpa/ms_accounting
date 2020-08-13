@@ -27,10 +27,19 @@ class Accounting:
         """
         AccountingModel.objects(inn=self.inn).delete()
 
-    def exist(self):
+    @classmethod
+    def get_object(cls, inn):
+        """
+        Получить из БД БО
+        """
+        collection = AccountingModel.objects(inn=inn).first()
+        return collection
+
+    @staticmethod
+    def exist(inn):
         """
         Проверить есть ли такое БО в БД
         """
-        if AccountingModel.objects(inn=self.inn, data=self.data):
+        if AccountingModel.objects(inn=inn):
             return True
         return False
