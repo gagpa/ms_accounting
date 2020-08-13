@@ -2,7 +2,7 @@
 Файл с фиктурами для тестов.
 """
 import pytest
-
+import init_env
 from app.exceptions.invalid_data import InvalidInn, InvalidOrgId, InvalidAccId
 from app.bussiness_components import NalogParserJson, NalogScalper, NalogValidatorInfo
 from app.bussiness_logics import AccountLogic

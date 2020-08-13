@@ -57,9 +57,9 @@ def test_parse_accounting_json(correct_accounting_data,
 
     parse_json = bc_nalog_parser_json.parse_accounting_json(test_acc_id)
 
-    assert isinstance(parse_json, list)
-    assert parse_json[0].get('id')
-    assert str(parse_json[0]['id']) == expected_id
+    assert isinstance(parse_json, dict)
+    assert parse_json.get('id')
+    assert str(parse_json['id']) == expected_id
 
     test_args = incorrect_args
     for acc_id in test_args:
@@ -77,6 +77,6 @@ def test_parse_accounting(correct_accounting_data,
     expected_id = correct_accounting_data['id']
     parse_json = bc_nalog_parser_json.parse_accounting(test_inn)
 
-    assert isinstance(parse_json, list)
-    assert parse_json[0].get('id')
-    assert str(parse_json[0]['id']) == expected_id
+    assert isinstance(parse_json, dict)
+    assert parse_json.get('id')
+    assert str(parse_json['id']) == expected_id

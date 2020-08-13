@@ -54,7 +54,7 @@ class NalogParserJson:
             response_data = self.scalp.get_json('accounting', acc_id=accounting_id)
         except (InvalidInputData, JSONDecodeError):
             raise InvalidAccId
-        accounting = response_data
+        accounting = response_data[0]
         return accounting
 
     def parse_accounting(self, inn: str) -> dict:
@@ -63,5 +63,5 @@ class NalogParserJson:
         """
         org_id = self.parse_organisation_id(inn)
         acc_id = self.parse_accounting_id(org_id)
-        accounting = self.parse_accounting_json(acc_id)[0]
+        accounting = self.parse_accounting_json(acc_id)
         return accounting
