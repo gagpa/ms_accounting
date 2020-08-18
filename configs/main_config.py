@@ -10,6 +10,7 @@ class Config:
         'password': os.environ.get('DB_PASSWORD'),
     }
 
+
     def init_app(self, app):
         pass
 

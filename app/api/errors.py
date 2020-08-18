@@ -40,13 +40,13 @@ def error_db_off(e):
     return error_unexpected(e)
 
 
-@api.errorhandler(Exception)
-def error_unexpected(e):
-    """
-    Обработка неожиданных ошибок
-    """
-    status_code = 503
-    return jsonify({
-            'success': False,
-            'message': 'Сервис не доступен'
-        }), status_code
+# @api.errorhandler(Exception)
+# def error_unexpected(e):
+#     """
+#     Обработка неожиданных ошибок
+#     """
+#     status_code = 503
+#     return jsonify({
+#             'success': False,
+#             'message': 'Сервис не доступен'
+#         }), status_code
