@@ -1,7 +1,6 @@
 from ..bussiness_components import Accounting, NalogValidatorInfo
-from ..exceptions.invalid_app import InternalError
-from ..exceptions.invalid_data import InvalidInn, InvalidOrgId, InvalidAccId
-from app.tasks.nalog_parse_accounting import parse_accounting
+from ..exceptions.invalid_data import InvalidInn
+from app.tasks.nalog_tasks import task_get_accounting
 
 
 class AccountLogic:
@@ -20,7 +19,7 @@ class AccountLogic:
                 accounting = collection['data']
                 return accounting
             else:
-                parse_accounting.apply_async((inn,))
+                task_get_accounting.apply_async((inn,),)
                 return {'data': 'Задачи в очереди.'}
         except InvalidInn:
             raise InvalidInn

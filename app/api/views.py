@@ -1,3 +1,7 @@
+"""
+Файл с views с префиксом /api/v1
+"""
+
 from . import api
 from flask import request, jsonify
 from ..bussiness_logics import AccountLogic
@@ -12,3 +16,9 @@ def accounting():
         'success': True,
         'data': accounting_dict
         })
+
+
+@api.route('/test')
+def test():
+    print(request.json)
+    return 'TEST'

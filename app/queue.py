@@ -4,7 +4,7 @@ from configs.celery_config import CeleryConfig
 
 def create_celery():
     celery = Celery(__name__,
-                    include=('app.tasks.nalog_parse_accounting',),
+                    include=('app.tasks.nalog_tasks',),
                     )
     celery.config_from_object(CeleryConfig)
     return celery

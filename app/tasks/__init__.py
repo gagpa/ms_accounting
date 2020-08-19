@@ -1,1 +1,1 @@
-from .nalog_parse_accounting import parse_accounting
+from .nalog_tasks import task_get_accounting
