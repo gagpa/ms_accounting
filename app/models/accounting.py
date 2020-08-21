@@ -6,5 +6,5 @@ class AccountingModel(db.Document):
     Модель БО.
     """
     inn = db.StringField(requirements=True, unique=True)
-    data = db.DictField()
+    accounting = db.DictField()
     period = db.StringField()

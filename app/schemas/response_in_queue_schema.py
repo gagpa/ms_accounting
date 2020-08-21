@@ -1,5 +1,5 @@
 from app import serializer
 
 
-class ResponseInQueue(serializer.Schema):
+class ResponseInQueueSchema(serializer.Schema):
     success = serializer.Boolean(default=True)

@@ -8,20 +8,20 @@ class Accounting:
     Взаимодействует с моделью.
     """
 
-    def __init__(self, inn: str, period: str, data: dict):
+    def __init__(self, inn: str, period: str, accounting: dict):
         """
         inn - ИНН
         data - информация БО
         """
         self.inn = inn
         self.period = period
-        self.data = data
+        self.accounting = accounting
 
     def save(self):
         """
         Сохранить данные БО в БД.
         """
-        AccountingModel(inn=self.inn, period=self.period, data=self.data).save()
+        AccountingModel(inn=self.inn, period=self.period, accounting=self.accounting).save()
 
     def delete(self):
         """
@@ -43,12 +43,7 @@ class Accounting:
         Получить данные БО в формате dict.
         """
         collection = AccountingModel.objects(inn=inn).first()
-        accounting_dict = AccountingSchema().dump({
-            'inn': inn,
-            'period': collection['period'],
-            'data': collection['data']
-        })
-        return accounting_dict
+        return dict(collection)
 
     @staticmethod
     def exist(inn):
