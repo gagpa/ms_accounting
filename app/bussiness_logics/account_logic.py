@@ -1,8 +1,7 @@
-from ..bussiness_components import Accounting, NalogValidatorInfo
+from ..bussiness_components import Accounting, NalogValidatorInfo, ResponseDealer
 from ..exceptions.invalid_data import InvalidInn
 from app.tasks.nalog_tasks import task_get_accounting
 from app.schemas.response_accounting_schema import ResponseAccountingSchema
-from app.schemas.response_in_queue import ResponseInQueue
 
 
 class AccountLogic:
@@ -21,7 +20,7 @@ class AccountLogic:
                 response = ResponseAccountingSchema().dumps()
             else:
                 task_get_accounting.apply_async((inn,))
-                response = ResponseInQueue().dumps()
+                response = ResponseDealer.in_queue()
             return response
         except InvalidInn:
             raise InvalidInn

@@ -11,11 +11,8 @@ from ..bussiness_logics import AccountLogic
 def accounting():
     inn = request.args.get('inn')
     b_logic = AccountLogic()
-    accounting_dict = b_logic.get_accounting(inn)
-    return jsonify({
-        'success': True,
-        'data': accounting_dict
-        })
+    response = b_logic.get_accounting(inn)
+    return response
 
 
 @api.route('/test')
