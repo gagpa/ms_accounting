@@ -41,7 +41,10 @@ class NalogParserJson:
         except (InvalidInputData, JSONDecodeError):
             raise InvalidInn
         content = response_data['content']
-        parse_inn = content[0]['inn']
+        try:
+            parse_inn = content[0]['inn']
+        except IndexError:
+            raise InvalidInn
         self.validator.validate_parse_inn(parse_inn, inn)
         org_id = str(content[0]['id'])
         return org_id

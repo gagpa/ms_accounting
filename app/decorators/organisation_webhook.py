@@ -11,16 +11,17 @@ def organisation_webhook(func):
         message = {'success': False}
         try:
             f = func(*args, **kwargs)
+            send_message('organisation', message)
             message = {'success': True}
+            return f
+
         except ConnectionError:
             pass
         except InvalidInn:
             pass
         except (InvalidAccId, InvalidOrgId):
             pass
-        finally:
-            send_message('organisation', message)
-        return f
+        send_message('organisation', message)
     return wrapper
 
 
