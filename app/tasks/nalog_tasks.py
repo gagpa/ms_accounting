@@ -11,5 +11,6 @@ def task_get_accounting(inn):
     """
     parser = NalogParserJson()
     accounting = parser.parse_accounting(inn)
-    Accounting(inn, accounting).save()
+    period = parser.parse_period_accounting(inn)
+    Accounting(inn, period, accounting).save()
     return accounting

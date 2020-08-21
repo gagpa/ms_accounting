@@ -1,6 +1,8 @@
 from ..bussiness_components import Accounting, NalogValidatorInfo
 from ..exceptions.invalid_data import InvalidInn
 from app.tasks.nalog_tasks import task_get_accounting
+from app.schemas.response_accounting_schema import ResponseAccountingSchema
+from app.schemas.response_in_queue import ResponseInQueue
 
 
 class AccountLogic:
@@ -15,11 +17,11 @@ class AccountLogic:
         try:
             NalogValidatorInfo.validate_inn(inn)
             if Accounting.exist(inn):
-                collection = Accounting.get_object(inn)
-                accounting = collection['data']
-                return accounting
+                accounting = Accounting.get_dict(inn)
+                response = ResponseAccountingSchema().dumps()
             else:
-                task_get_accounting.apply_async((inn,),)
-                return {'data': 'Задачи в очереди.'}
+                task_get_accounting.apply_async((inn,))
+                response = ResponseInQueue().dumps()
+            return response
         except InvalidInn:
             raise InvalidInn

@@ -7,3 +7,4 @@ class AccountingModel(db.Document):
     """
     inn = db.StringField(requirements=True, unique=True)
     data = db.DictField()
+    period = db.StringField()

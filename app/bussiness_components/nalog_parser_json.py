@@ -19,6 +19,18 @@ class NalogParserJson:
         self.scalp = NalogScalper()
         self.validator = NalogValidatorInfo()
 
+    def parse_period_accounting(self, inn: str) -> str:
+        """
+        Запарсить последний период БО
+        """
+        self.validator.validate_inn(inn)
+        try:
+            response_data = self.scalp.get_json('search_org', inn=inn)
+        except (InvalidInputData, JSONDecodeError):
+            raise InvalidInn
+        period = response_data['content'][0]['bfo'][0]['period']
+        return period
+
     def parse_organisation_id(self, inn: str) -> str:
         """
         Запарсить внутренний номер организации по ИНН
