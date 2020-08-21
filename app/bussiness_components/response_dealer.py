@@ -1,5 +1,6 @@
 from app.schemas.response_in_queue_schema import ResponseInQueueSchema
 from app.schemas.response_accounting_schema import ResponseAccountingSchema
+from app.schemas.response_error_schema import ResponseErrorSchema
 from flask import make_response, jsonify
 
 
@@ -24,6 +25,16 @@ class ResponseDealer:
         Подготовить ответ от сервера с инорфмацией БО.
         """
         response_dict = ResponseAccountingSchema().dump({'data': kwargs['data']})
+        status = 200
+        response = make_response(jsonify(response_dict), status)
+        return response
+
+    @staticmethod
+    def error(**kwargs):
+        """
+        Подготовить ответ от сервера с информацией БО
+        """
+        response_dict = ResponseErrorSchema().dump({'error': kwargs['error']})
         status = 200
         response = make_response(jsonify(response_dict), status)
         return response

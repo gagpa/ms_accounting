@@ -3,6 +3,7 @@ from flask import jsonify
 from . import api
 from ..exceptions.invalid_data import InvalidInn
 from pymongo.errors import ServerSelectionTimeoutError
+from ..bussiness_logics import ErrorHandleLogic
 
 
 @api.errorhandler(InvalidInn)
@@ -10,13 +11,8 @@ def error_invalid_inn(e):
     """
     Обработчкик ошибки неверно переданного ИНН.
     """
-    status_code = 400
-    return jsonify(
-        {
-            'success': False,
-            'message': 'Не верный ИНН'
-        }
-    ), status_code
+    response = ErrorHandleLogic().invalid_inn(repr(e))
+    return response
 
 
 @api.app_errorhandler(404)
@@ -24,11 +20,8 @@ def error_not_found(e):
     """
     Обработка 404 ошибки(страница не найдена).
     """
-    status_code = 404
-    return jsonify({
-        'success': False,
-        'message': 'Такой страницы не существует.'
-    }), status_code
+    response = ErrorHandleLogic().page_not_found(repr(e))
+    return response
 
 
 @api.errorhandler(ServerSelectionTimeoutError)
@@ -40,13 +33,10 @@ def error_db_off(e):
     return error_unexpected(e)
 
 
-# @api.errorhandler(Exception)
-# def error_unexpected(e):
-#     """
-#     Обработка неожиданных ошибок
-#     """
-#     status_code = 503
-#     return jsonify({
-#             'success': False,
-#             'message': 'Сервис не доступен'
-#         }), status_code
+@api.errorhandler(Exception)
+def error_unexpected(e):
+    """
+    Обработка неожиданных ошибок
+    """
+    response = ErrorHandleLogic().unexpected(repr(e))
+    return response
