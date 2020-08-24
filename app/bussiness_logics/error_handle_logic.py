@@ -2,6 +2,9 @@ from ..bussiness_objects import ResponseDealer
 
 
 class ErrorHandleLogic:
+    """
+    Класс логики обработки ошибок.
+    """
 
     def invalid_inn(self, error_message):
         """

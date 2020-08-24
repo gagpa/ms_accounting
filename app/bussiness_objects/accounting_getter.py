@@ -1,7 +1,6 @@
 from celery import current_app as app
 
-from app.decorators import organisation_webhook
-from ..bussiness_components import NalogParserJson, AccountingEntity, NalogValidatorInfo
+from ..bussiness_components import NalogParserJson, AccountingEntity, NalogValidatorInfo, Requester
 
 
 class AccountingGetter:
@@ -36,12 +35,13 @@ class AccountingGetter:
 
 
 @app.task(name='parse.accounting')
-@organisation_webhook
-def task_parse(inn, ) -> dict:
+def task_parse(inn) -> dict:
     """
     Поставить задачу в очередь.
-    Сделаить метод parse().
+    Вызвать метод parse и отправить результат с помощью веб-хука.
     """
     ag = AccountingGetter(inn)
     accounting_dict = ag.parse()
+    requester = Requester()
+    success = requester.webhook(contact_name='organisation', json=accounting_dict)
     return accounting_dict
