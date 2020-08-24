@@ -1,8 +1,9 @@
+import json
+
 from ..models import AccountingModel
-from ..schemas.accounting_schema import AccountingSchema
 
 
-class Accounting:
+class AccountingEntity:
     """
     Класс БО.
     Взаимодействует с моделью.
@@ -43,7 +44,10 @@ class Accounting:
         Получить данные БО в формате dict.
         """
         collection = AccountingModel.objects(inn=inn).first()
-        return dict(collection)
+        if collection:
+            collection = json.loads(collection.to_json())
+            collection.pop('_id')
+        return collection
 
     @staticmethod
     def exist(inn):

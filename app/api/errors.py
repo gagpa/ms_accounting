@@ -1,9 +1,8 @@
-from flask import jsonify
+from pymongo.errors import ServerSelectionTimeoutError
 
 from . import api
-from ..exceptions.invalid_data import InvalidInn
-from pymongo.errors import ServerSelectionTimeoutError
 from ..bussiness_logics import ErrorHandleLogic
+from ..exceptions.invalid_data import InvalidInn
 
 
 @api.errorhandler(InvalidInn)

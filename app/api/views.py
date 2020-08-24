@@ -2,15 +2,16 @@
 Файл с views с префиксом /api/v1
 """
 
+from flask import request
+
 from . import api
-from flask import request, jsonify
-from ..bussiness_logics import AccountLogic
+from ..bussiness_logics import AccountingLogic
 
 
 @api.route('/accounting')
 def accounting():
     inn = request.args.get('inn')
-    b_logic = AccountLogic()
+    b_logic = AccountingLogic()
     response = b_logic.get_accounting(inn)
     return response
 

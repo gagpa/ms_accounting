@@ -2,10 +2,9 @@
 Файл с фиктурами для тестов.
 """
 import pytest
-import init_env
-from app.exceptions.invalid_data import InvalidInn, InvalidOrgId, InvalidAccId
+
 from app.bussiness_components import NalogParserJson, NalogScalper, NalogValidatorInfo
-from app.bussiness_logics import AccountLogic
+from app.exceptions.invalid_data import InvalidInn, InvalidOrgId, InvalidAccId
 
 
 @pytest.fixture()
@@ -61,11 +60,6 @@ def incorrect_args():
 @pytest.fixture()
 def search_link():
     return 'https://bo.nalog.ru/nbo/organizations/search?query=5405956474'
-
-
-@pytest.fixture()
-def accounting_logic():
-    return AccountLogic()
 
 
 @pytest.fixture()

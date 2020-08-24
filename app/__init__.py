@@ -4,8 +4,8 @@ from flask import Flask
 
 from app.db import db
 from app.queue import create_celery, init_celery
-from configs.main_config import main_config
 from app.serializer import serializer
+from configs.main_config import main_config
 
 
 def create_app(config_name):

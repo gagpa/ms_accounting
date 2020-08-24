@@ -1,19 +1,28 @@
 import requests
+
+from app.exceptions import InvalidInn, InvalidAccId, InvalidOrgId
+from app.schemas.accounting_schema import AccountingSchema
 from configs.contacts import contacts
-from app.exceptions.invalid_data import InvalidInn, InvalidAccId, InvalidOrgId
 
 
 def organisation_webhook(func):
     """
     Декоратор для отправки webhook на OrganisationService.
     """
+
     def wrapper(*args, **kwargs):
-        message = {'success': False}
+        message = {
+            'success': False,
+            'data': {'inn': args[0]}
+        }
         try:
-            f = func(*args, **kwargs)
+            accounting = func(*args, **kwargs)
+            message = AccountingSchema().dump({'inn': accounting['inn'],
+                                               'period': accounting['period'],
+                                               'accounting': accounting['accounting']
+                                               })
             send_message('organisation', message)
-            message = {'success': True}
-            return f
+            return accounting
 
         except ConnectionError:
             pass
@@ -21,7 +30,9 @@ def organisation_webhook(func):
             pass
         except (InvalidAccId, InvalidOrgId):
             pass
+
         send_message('organisation', message)
+
     return wrapper
 
 

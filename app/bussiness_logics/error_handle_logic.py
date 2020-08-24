@@ -1,4 +1,4 @@
-from ..bussiness_components import ResponseDealer
+from ..bussiness_objects import ResponseDealer
 
 
 class ErrorHandleLogic:

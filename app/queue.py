@@ -1,10 +1,11 @@
 from celery import Celery
+
 from configs.celery_config import CeleryConfig
 
 
 def create_celery():
     celery = Celery(__name__,
-                    include=('app.tasks.nalog_tasks',),
+                    include=('app.bussiness_objects.accounting_getter',),
                     )
     celery.config_from_object(CeleryConfig)
     return celery

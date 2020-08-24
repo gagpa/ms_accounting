@@ -1,7 +1,6 @@
-from app.schemas.response_in_queue_schema import ResponseInQueueSchema
-from app.schemas.response_accounting_schema import ResponseAccountingSchema
-from app.schemas.response_error_schema import ResponseErrorSchema
 from flask import make_response, jsonify
+
+from app.schemas import ResponseInQueueSchema, ResponseAccountingSchema, ResponseErrorSchema
 
 
 class ResponseDealer:

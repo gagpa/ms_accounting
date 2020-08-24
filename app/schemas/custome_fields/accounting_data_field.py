@@ -1,9 +1,11 @@
 from collections import defaultdict
-from app import serializer
+
 from marshmallow import ValidationError
 
+from app import serializer
 
-class AccountingData(serializer.Field):
+
+class AccountingDataField(serializer.Field):
     """
     Кастомное поле для данных БО.
     """
@@ -37,4 +39,3 @@ class AccountingData(serializer.Field):
         for i, sign in enumerate(reversed(key)):
             if not sign.isdigit():
                 return key[:-i], key[-i:]
-
