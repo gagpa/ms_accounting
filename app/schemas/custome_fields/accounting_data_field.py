@@ -25,7 +25,7 @@ class AccountingDataField(serializer.Field):
         return new_data
 
     def _deserialize(self, value, attr, data, **kwargs):
-        raise ValidationError("Pin codes must contain only digits.")
+        raise ValidationError('Поле не может быть десиарелизовано')
 
     def transform_period(self, period: str):
         translate_period = {}
