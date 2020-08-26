@@ -35,7 +35,7 @@ class AccountingGetter:
         return accounting_dict
 
     def task_parse(self):
-        task_parse.delay(self.inn, countdown=int(os.environ.get('QUEUE_COUNTDOWN')))
+        task_parse.apply_async((self.inn, ), countdown=int(os.environ.get('QUEUE_COUNTDOWN')))
 
 
 @app.task(name='parse.accounting')
