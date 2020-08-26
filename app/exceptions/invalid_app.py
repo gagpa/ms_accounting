@@ -4,4 +4,10 @@
 
 
 class InternalError(Exception):
-    pass
+    """
+    Исключение внутренней ошибки.
+    """
+    error = {'code': 500,
+             'title': 'Internal Error',
+             'detail': 'Сервис врменно не доступен'
+             }

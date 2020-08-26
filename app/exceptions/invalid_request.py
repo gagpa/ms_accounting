@@ -7,4 +7,15 @@ class InvalidHeadersRequest(ConnectionError):
     """
     Заданы неправильные зоголовки у запроса.
     """
-    pass
+    error = {'code': 500,
+             'title': 'Internal Error',
+             'detail': 'Сервис врменно не доступен'}
+
+
+class PageNotFounded(ConnectionError):
+    """
+    Исключение страница не найдена.
+    """
+    error = {"code": 404,
+             "title": "Not found",
+             "detail": "Страница не существует"}

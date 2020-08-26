@@ -1,6 +1,8 @@
 from celery import current_app as app
 
-from ..bussiness_components import NalogParserJson, AccountingEntity, NalogValidatorInfo, Requester
+from app.exceptions import InvalidInn, UnregisteredInn, InternalError
+from ..bussiness_components import NalogParserJson, AccountingEntity, NalogValidatorInfo
+from ..bussiness_objects.request_dealer import RequestDealer
 
 
 class AccountingGetter:
@@ -40,8 +42,17 @@ def task_parse(inn) -> dict:
     Поставить задачу в очередь.
     Вызвать метод parse и отправить результат с помощью веб-хука.
     """
-    ag = AccountingGetter(inn)
-    accounting_dict = ag.parse()
-    requester = Requester()
-    success = requester.webhook(contact_name='organisation', json=accounting_dict)
-    return accounting_dict
+    requester = RequestDealer('organisation')
+    try:
+        ag = AccountingGetter(inn)
+        accounting_dict = ag.parse()
+        requester.send_accounting_webhook(accounting_dict)
+        return accounting_dict
+
+    except UnregisteredInn as e:
+        requester.send_error_webhook(inn, e.error)
+    except InvalidInn as e:
+        requester.send_error_webhook(inn, e.error)
+    except Exception:
+        e = InternalError
+        requester.send_error_webhook(inn, e.error)
