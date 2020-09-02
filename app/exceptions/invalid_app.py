@@ -9,5 +9,5 @@ class InternalError(Exception):
     """
     error = {'code': 500,
              'title': 'Internal Error',
-             'detail': 'Сервис врменно не доступен'
+             'detail': 'Сервис временно недоступен'
              }

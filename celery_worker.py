@@ -1,4 +1,7 @@
-import init_env
+from init_env import init_env
+
+init_env()
+
 from app import create_app, celery
 
 app = create_app('default')

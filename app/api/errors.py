@@ -42,11 +42,11 @@ def error_db_off(e):
     return error_unexpected(e)
 
 
-# @api.errorhandler(Exception)
-# def error_unexpected(e):
-#     """
-#     Обработка неожиданных ошибок
-#     """
-#     e = InternalError
-#     response = ErrorHandleLogic().response(e)
-#     return response
+@api.errorhandler(Exception)
+def error_unexpected(e):
+    """
+    Обработка неожиданных ошибок
+    """
+    e = InternalError
+    response = ErrorHandleLogic().response(e)
+    return response

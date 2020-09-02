@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+ app:
+  restart: always
+  container_name: app
+  volumes:
+   - ./:/app
+   - ./sock:/sock
+  build:
+   context: .
+   dockerfile: ./docker_app.conf
+  command: uwsgi --ini /etc/uwsgi.ini
+  environment:
+   - CELERY_BROKER_URL=amqp://user:user@rabbit:5672//
+   - CELERY_RESULT_BACKEND=mongodb://mongodb:27017/queue
+  links:
+   - mongodb
+   - rabbit
+ nginx:
+  restart: always
+  container_name: nginx
+  volumes:
+   - ./:/app
+   - ./sock:/sock
+  build:
+   context: .
+   dockerfile: ./docker_nginx.conf
+  depends_on:
+   - app
+  ports:
+    - "8080:8080"
+ mongodb:
+  image: mongo:latest
+  container_name: "mongodb"
+  ports:
+      - "27017:27017"
+  command: mongod
+ rabbit:
+  image: rabbitmq
+  container_name: "rabbit"
+  environment:
+     - RABBITMQ_DEFAULT_USER=user
+     - RABBITMQ_DEFAULT_PASS=user
+  ports:
+     - "5672:5672"
+     - "15672:15672"
+volumes:
+ sock:

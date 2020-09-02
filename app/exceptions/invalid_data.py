@@ -9,7 +9,7 @@ class InvalidInputData(ValueError):
     """
     error = {'code': 503,
              'title': 'Internal Error',
-             'detail': 'Сервис врменно не доступен'
+             'detail': 'Сервис недоступен'
              }
 
 
@@ -19,7 +19,7 @@ class InvalidOrgId(InvalidInputData):
     """
     error = {'code': 503,
              'title': 'Internal Error',
-             'detail': 'Сервис врменно не доступен'
+             'detail': 'Сервис недоступен'
              }
 
 
@@ -29,7 +29,7 @@ class InvalidAccId(InvalidInputData):
     """
     error = {'code': 500,
              'title': 'Internal Error',
-             'detail': 'Сервис врменно не доступен'}
+             'detail': 'Сервис недоступен'}
 
 
 class InvalidInn(InvalidInputData):
