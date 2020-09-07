@@ -9,11 +9,11 @@ services:
   build:
    context: .
    dockerfile: ./docker_app.conf
-  command: uwsgi --ini /etc/uwsgi.ini
+  command: sh -c "service supervisor start && uwsgi --ini /etc/uwsgi.ini"
   environment:
    - CELERY_BROKER_URL=amqp://user:user@rabbit:5672//
    - CELERY_RESULT_BACKEND=mongodb://mongodb:27017/queue
-  links:
+  depends_on:
    - mongodb
    - rabbit
  nginx:

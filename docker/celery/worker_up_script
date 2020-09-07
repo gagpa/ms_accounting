@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /app
+export CELERY_BROKER_URL=amqp://user:user@rabbit:5672//
+export CELERY_RESULT_BACKEND=mongodb://mongodb:27017/queue
+celery -A celery_worker.celery worker
