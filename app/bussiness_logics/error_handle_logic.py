@@ -7,5 +7,8 @@ class ErrorHandleLogic:
     """
 
     def response(self, exception):
-        response = ResponseDealer.error(error=exception.error)
+        """
+        Ответить.
+        """
+        response = ResponseDealer().error(error=exception.error)
         return response

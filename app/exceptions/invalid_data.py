@@ -27,7 +27,7 @@ class InvalidAccId(InvalidInputData):
     """
     Передан не корректный внутренний номер БО.
     """
-    error = {'code': 500,
+    error = {'code': 503,
              'title': 'Internal Error',
              'detail': 'Сервис недоступен'}
 
@@ -49,3 +49,12 @@ class UnregisteredInn(InvalidInn):
     error = {'code': 422,
              'title': 'Validation Error',
              'detail': 'Переданный ИНН незарегистрирован в базе'}
+
+
+class InvalidTypeResponse(InvalidInputData):
+    """
+    Передан неверный тип ответа.
+    """
+    error = {'code': 503,
+             'title': 'Internal Error',
+             'detail': 'Переданный тип ответа не существует'}

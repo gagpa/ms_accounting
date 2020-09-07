@@ -12,9 +12,10 @@ class AccountingLogic:
         """
         ag = AccountingGetter(inn)
         accounting = ag.from_db()
+        dealer = ResponseDealer()
         if accounting:
-            response = ResponseDealer.accounting(data=accounting)
+            response = dealer.accounting(data=accounting)
         else:
             ag.task_parse()
-            response = ResponseDealer.in_queue()
+            response = dealer.in_queue()
         return response
