@@ -1,6 +1,10 @@
-from init_env import init_env
+import os
 
-init_env()
+from dotenv import load_dotenv
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
 
 from app import app
 

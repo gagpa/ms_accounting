@@ -1,8 +1,7 @@
-import os
-
 from celery import current_app as app
 
 from app.exceptions import InvalidInn, UnregisteredInn, InternalError
+from configs.task_config import QUEUE_COUNTDOWN
 from ..bussiness_components import NalogParserJson, AccountingEntity, NalogValidatorInfo
 from ..bussiness_objects.request_dealer import RequestDealer
 
@@ -35,7 +34,7 @@ class AccountingGetter:
         return accounting_dict
 
     def task_parse(self):
-        task_parse.apply_async((self.inn, ), countdown=int(os.environ.get('QUEUE_COUNTDOWN')))
+        task_parse.apply_async((self.inn,), countdown=int(QUEUE_COUNTDOWN))
 
 
 @app.task(name='parse.accounting')

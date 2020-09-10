@@ -1,18 +1,12 @@
 from celery import Celery
 
-from configs.celery_config import CeleryConfig
 
-
-def create_celery():
-    celery = Celery(__name__,
-                    include=('app.bussiness_objects.accounting_getter',),
-                    )
-    celery.config_from_object(CeleryConfig)
-    return celery
-
-
-def init_celery(celery, app):
-    celery.main = app.import_name
+def make_celery(app):
+    celery = Celery(
+        app.import_name,
+        backend=app.config['CELERY_RESULT_BACKEND'],
+        broker=app.config['CELERY_BROKER_URL']
+    )
     celery.conf.update(app.config)
 
     class ContextTask(celery.Task):
@@ -21,3 +15,4 @@ def init_celery(celery, app):
                 return self.run(*args, **kwargs)
 
     celery.Task = ContextTask
+    return celery
