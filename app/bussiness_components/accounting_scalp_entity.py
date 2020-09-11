@@ -1,41 +1,47 @@
 import json
 
-from ..models import AccountingModel
+from ..models import AccountingScalpModel
+from datetime import datetime
 
 
-class AccountingEntity:
+class AccountingScalpEntity:
     """
-    Класс БО.
-    Взаимодействует с моделью.
+    Класс для взаимодействия с моделью AccountingScalpModel.
     """
 
-    def __init__(self, inn: str, period: str, accounting: dict):
+    def __init__(self, inn: str, period: str, accounting: dict, parse_date=None):
         """
         inn - ИНН
+        period - периоды БО
         data - информация БО
+        parse_date - время получения информации от источника
         """
         self.inn = inn
         self.period = period
         self.accounting = accounting
+        self.parse_date = parse_date or datetime.now()
 
     def save(self):
         """
         Сохранить данные БО в БД.
         """
-        AccountingModel(inn=self.inn, period=self.period, accounting=self.accounting).save()
+        AccountingScalpModel(inn=self.inn,
+                             period=self.period,
+                             accounting=self.accounting,
+                             parse_date=self.parse_date).save()
 
     def delete(self):
         """
         Удалить данные БО в БД.
         """
-        AccountingModel.objects(inn=self.inn).delete()
+        AccountingScalpModel.objects(inn=self.inn).delete()
 
     @classmethod
     def get_object(cls, inn):
         """
         Получить из БД БО
         """
-        collection = AccountingModel.objects(inn=inn).first()
+        collection = AccountingScalpModel.objects(inn=inn).first()
         return collection
 
     @classmethod
@@ -43,7 +49,7 @@ class AccountingEntity:
         """
         Получить данные БО в формате dict.
         """
-        collection = AccountingModel.objects(inn=inn).first()
+        collection = AccountingScalpModel.objects(inn=inn).first()
         if collection:
             collection = json.loads(collection.to_json())
             collection.pop('_id')
@@ -54,6 +60,6 @@ class AccountingEntity:
         """
         Проверить есть ли такое БО в БД
         """
-        if AccountingModel.objects(inn=inn):
+        if AccountingScalpModel.objects(inn=inn):
             return True
         return False

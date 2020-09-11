@@ -1,6 +1,8 @@
 version: '3.7'
 services:
  app:
+  env_file:
+    - .env
   restart: always
   container_name: app
   volumes:
@@ -8,15 +10,14 @@ services:
    - ./sock:/sock
   build:
    context: .
-   dockerfile: ./docker_app.conf
+   dockerfile: docker/docker_files/docker_app.conf
   command: sh -c "service supervisor start && uwsgi --ini /etc/uwsgi.ini"
-  environment:
-   - CELERY_BROKER_URL=amqp://user:user@rabbit:5672//
-   - CELERY_RESULT_BACKEND=mongodb://mongodb:27017/queue
   depends_on:
    - mongodb
    - rabbit
  nginx:
+  env_file:
+   - .env
   restart: always
   container_name: nginx
   volumes:
@@ -24,25 +25,28 @@ services:
    - ./sock:/sock
   build:
    context: .
-   dockerfile: ./docker_nginx.conf
+   dockerfile: docker/docker_files/docker_nginx.conf
   depends_on:
    - app
   ports:
-    - "8080:8080"
+    - "${APP_PORT}:8080"
  mongodb:
+  env_file:
+   - .env
   image: mongo:latest
   container_name: "mongodb"
   ports:
-      - "27017:27017"
+      - "${DB_PORT}:27017"
   command: mongod
  rabbit:
+  env_file:
+   - .env
   image: rabbitmq
-  container_name: "rabbit"
+  container_name: "${BROKER_HOST}"
   environment:
-     - RABBITMQ_DEFAULT_USER=user
-     - RABBITMQ_DEFAULT_PASS=user
+     - RABBITMQ_DEFAULT_USER=${BROKER_USERNAME}
+     - RABBITMQ_DEFAULT_PASS=${BROKER_PASSWORD}
   ports:
-     - "5672:5672"
-     - "15672:15672"
+     - "${BROKER_PORT}:5672"
 volumes:
  sock:

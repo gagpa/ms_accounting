@@ -1,1 +1,1 @@
-from .accounting import AccountingModel
+from .accounting_scalp_model import AccountingScalpModel

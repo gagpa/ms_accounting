@@ -2,7 +2,7 @@ from celery import current_app as app
 
 from app.exceptions import InvalidInn, UnregisteredInn, InternalError
 from configs.task_config import QUEUE_COUNTDOWN
-from ..bussiness_components import NalogParserJson, AccountingEntity, NalogValidatorInfo
+from ..bussiness_components import NalogParserJson, AccountingScalpEntity, NalogValidatorInfo
 from ..bussiness_objects.request_dealer import RequestDealer
 
 
@@ -19,7 +19,7 @@ class AccountingGetter:
         """
         Достать БО из БД.
         """
-        accounting_dict = AccountingEntity.get_dict(self.inn)
+        accounting_dict = AccountingScalpEntity.get_dict(self.inn)
         return accounting_dict
 
     def parse(self) -> dict:
@@ -29,8 +29,8 @@ class AccountingGetter:
         parser = NalogParserJson()
         accounting = parser.parse_accounting(self.inn)
         period = parser.parse_period_accounting(self.inn)
-        AccountingEntity(self.inn, period, accounting).save()
-        accounting_dict = AccountingEntity.get_dict(self.inn)
+        AccountingScalpEntity(self.inn, period, accounting).save()
+        accounting_dict = AccountingScalpEntity.get_dict(self.inn)
         return accounting_dict
 
     def task_parse(self):
@@ -54,6 +54,6 @@ def task_parse(inn) -> dict:
         requester.send_error_webhook(inn, e.error)
     except InvalidInn as e:
         requester.send_error_webhook(inn, e.error)
-    except Exception:
-        e = InternalError
-        requester.send_error_webhook(inn, e.error)
+    # except Exception:
+    #     e = InternalError
+    #     requester.send_error_webhook(inn, e.error)
