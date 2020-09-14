@@ -1,5 +1,5 @@
 from celery import current_app as app
-
+from mongoengine.errors import NotUniqueError
 from app.exceptions import InvalidInn, UnregisteredInn, InternalError
 from configs.task_config import QUEUE_COUNTDOWN
 from ..bussiness_components import NalogParserJson, AccountingScalpEntity, NalogValidatorInfo
@@ -46,7 +46,10 @@ def task_parse(inn) -> dict:
     requester = RequestDealer('organisation')
     try:
         ag = AccountingGetter(inn)
-        accounting_dict = ag.parse()
+        try:
+            accounting_dict = ag.parse()
+        except NotUniqueError:
+            accounting_dict = ag.from_db()
         requester.send_accounting_webhook(accounting_dict)
         return accounting_dict
 
@@ -54,6 +57,6 @@ def task_parse(inn) -> dict:
         requester.send_error_webhook(inn, e.error)
     except InvalidInn as e:
         requester.send_error_webhook(inn, e.error)
-    # except Exception:
-    #     e = InternalError
-    #     requester.send_error_webhook(inn, e.error)
+    except Exception:
+        e = InternalError
+        requester.send_error_webhook(inn, e.error)
