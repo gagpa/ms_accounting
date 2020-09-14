@@ -4,7 +4,6 @@ import requests
 class Requester:
     """
     Класс, посылающий запрос.
-    Может сделать веб-хук.
     """
 
     def is_success(self, response) -> bool:

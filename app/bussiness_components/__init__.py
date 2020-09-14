@@ -4,3 +4,4 @@ from .nalog_scalper import NalogScalper
 from .nalog_validator_info import NalogValidatorInfo
 from .requester import Requester
 from .response_maker import ResponseMaker
+from .identificator import Identificator

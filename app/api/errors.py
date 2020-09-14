@@ -2,7 +2,7 @@ from pymongo.errors import ServerSelectionTimeoutError
 
 from . import api
 from ..bussiness_logics import ErrorHandleLogic
-from ..exceptions import InvalidInn, UnregisteredInn, PageNotFounded, InternalError
+from ..exceptions import InvalidInn, UnregisteredInn, PageNotFounded, InternalError, InvalidToken
 
 
 @api.errorhandler(InvalidInn)
@@ -40,6 +40,12 @@ def error_db_off(e):
     Сообщает, что к БД нет доступа.
     """
     return error_unexpected(e)
+
+
+@api.errorhandler(InvalidToken)
+def error_auth(e):
+    response = ErrorHandleLogic().response(e)
+    return response
 
 
 @api.errorhandler(Exception)

@@ -5,5 +5,5 @@ import os
 
 contacts = \
     {
-        'organisation': os.environ.get('WEBHOOK_URL'),
+        os.environ.get('AUTH_TOKEN'): os.environ.get('WEBHOOK_URL'),
     }

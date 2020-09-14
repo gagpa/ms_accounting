@@ -6,11 +6,11 @@ class AccountingLogic:
     Логика получения БО.
     """
 
-    def get_accounting(self, inn: str) -> dict:
+    def get_accounting(self, inn: str, token: str) -> dict:
         """
         Логика метода GET /accounting
         """
-        ag = AccountingGetter(inn)
+        ag = AccountingGetter(inn, token)
         accounting = ag.from_db()
         dealer = ResponseDealer()
         if accounting:

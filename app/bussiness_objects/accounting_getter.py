@@ -1,8 +1,8 @@
 from celery import current_app as app
 from mongoengine.errors import NotUniqueError
-from app.exceptions import InvalidInn, UnregisteredInn, InternalError
+from app.exceptions import InvalidInn, UnregisteredInn, InternalError, InvalidToken
 from configs.task_config import QUEUE_COUNTDOWN
-from ..bussiness_components import NalogParserJson, AccountingScalpEntity, NalogValidatorInfo
+from ..bussiness_components import NalogParserJson, AccountingScalpEntity, NalogValidatorInfo, Identificator
 from ..bussiness_objects.request_dealer import RequestDealer
 
 
@@ -11,9 +11,11 @@ class AccountingGetter:
     Класс владеющий всеми методами достать полноценный БО.
     """
 
-    def __init__(self, inn: str):
+    def __init__(self, inn: str, token: str):
         NalogValidatorInfo.validate_inn(inn)
+        identificator = Identificator(token)
         self.inn = inn
+        self.contact = identificator.get_contact()
 
     def from_db(self):
         """
@@ -38,25 +40,31 @@ class AccountingGetter:
 
 
 @app.task(name='parse.accounting')
-def task_parse(inn) -> dict:
+def task_parse(inn, client_token) -> dict:
     """
     Поставить задачу в очередь.
     Вызвать метод parse и отправить результат с помощью веб-хука.
     """
-    requester = RequestDealer('organisation')
+    requester = RequestDealer()
     try:
-        ag = AccountingGetter(inn)
+        ag = AccountingGetter(inn, client_token)
+        contact_url = ag.contact
         try:
             accounting_dict = ag.parse()
         except NotUniqueError:
             accounting_dict = ag.from_db()
-        requester.send_accounting_webhook(accounting_dict)
+        requester.send_accounting_webhook(accounting_dict, contact_url)
         return accounting_dict
 
     except UnregisteredInn as e:
-        requester.send_error_webhook(inn, e.error)
+        requester.send_error_webhook(inn, e.error, contact_url)
+
     except InvalidInn as e:
-        requester.send_error_webhook(inn, e.error)
+        requester.send_error_webhook(inn, e.error, contact_url)
+
+    except InvalidToken:
+        pass
+
     except Exception:
         e = InternalError
-        requester.send_error_webhook(inn, e.error)
+        requester.send_error_webhook(inn, e.error, contact_url)
